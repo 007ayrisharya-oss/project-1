@@ -2,10 +2,90 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>RAG AI Assistant</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f9; display: flex; justify-content: center; padding: 20px; }
+        #chat-container { width: 100%; max-width: 600px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        #chat-box { height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 4px; }
+        .input-group { display: flex; gap: 10px; }
+        input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 10px 15px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:disabled, input:disabled { opacity: 0.65; cursor: not-allowed; }
+        .thinking { color: #666; font-style: italic; }
+        .error { color: #b42318; }
+    </style>
 </head>
 <body>
-    <h1>Welcome to My Home Page</h1>
+    <div id="chat-container">
+        <h2>RAG Document Assistant</h2>
+        <div id="chat-box"></div>
+        <div class="input-group">
+            <input type="text" id="userInput" placeholder="Ask a question about your docs...">
+            <button id="sendBtn" onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const input = document.getElementById('userInput');
+        const box = document.getElementById('chat-box');
+        const sendButton = document.getElementById('sendBtn');
+
+        function addMessage(label, message, className = '') {
+            const paragraph = document.createElement('p');
+            paragraph.className = className;
+
+            const name = document.createElement('strong');
+            name.textContent = `${label}: `;
+            paragraph.append(name, document.createTextNode(message));
+
+            box.appendChild(paragraph);
+            box.scrollTop = box.scrollHeight;
+            return paragraph;
+        }
+
+        async function sendMessage() {
+            const text = input.value.trim();
+            if (!text) return;
+
+            addMessage('You', text);
+            input.value = '';
+            input.disabled = true;
+            sendButton.disabled = true;
+            const thinking = addMessage('AI', 'Thinking...', 'thinking');
+
+            try {
+                // Keep the status visible briefly; the local backend often responds instantly.
+                await new Promise((resolve) => setTimeout(resolve, 400));
+
+                const response = await fetch('http://127.0.0.1:8000/ask', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question: text })
+                });
+
+                if (!response.ok) {
+                    throw new Error('The server returned an error.');
+                }
+
+                const data = await response.json();
+                thinking.remove();
+                addMessage('AI', data.answer);
+            } catch (err) {
+                thinking.remove();
+                addMessage('Error', 'Cannot connect to http://127.0.0.1:8000', 'error');
+            } finally {
+                input.disabled = false;
+                sendButton.disabled = false;
+                input.focus();
+            }
+        }
+
+        input.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+    </script>
 </body>
 </html>

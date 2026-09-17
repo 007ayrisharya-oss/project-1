@@ -1,0 +1,5 @@
+Project Alpha was launched in 2024 to automate document processing.
+
+For support, contact support@example.com.
+
+System maintenance occurs every Sunday at midnight UTC.

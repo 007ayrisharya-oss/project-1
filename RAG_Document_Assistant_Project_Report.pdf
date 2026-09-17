@@ -1,0 +1,317 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R 7 0 R 9 0 R] /Count 3 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 2269 >>
+stream
+BT
+/F1 10 Tf
+50 770 Td
+14 TL
+/F2 22 Tf
+(RAG Document Assistant) Tj
+/F1 10 Tf
+T*
+T*
+/F2 14 Tf
+(Project Report) Tj
+/F1 10 Tf
+T*
+T*
+(A local, web-based document question-answering application built with HTML, JavaScript,) Tj
+T*
+(Python, and FastAPI.) Tj
+T*
+T*
+T*
+/F2 13 Tf
+(1. Executive Summary) Tj
+/F1 10 Tf
+T*
+(This project implements a basic Retrieval-Augmented Generation \(RAG\)-style document) Tj
+T*
+(assistant. Users ask questions through a browser chat interface. A FastAPI backend reads a) Tj
+T*
+(local knowledge base, retrieves the most relevant paragraph using keyword overlap, and) Tj
+T*
+(returns that evidence to the user.) Tj
+T*
+T*
+(The application demonstrates the full frontend-to-backend AI application flow: user input,) Tj
+T*
+(API communication, document retrieval, answer delivery, error handling, and a responsive) Tj
+T*
+(chat experience.) Tj
+T*
+T*
+T*
+/F2 13 Tf
+(2. Problem Statement) Tj
+/F1 10 Tf
+T*
+(Teams often spend time searching policy documents, procedures, and operational notes for) Tj
+T*
+(simple answers. This project provides a lightweight assistant that can retrieve relevant) Tj
+T*
+(information from a maintained knowledge base.) Tj
+T*
+T*
+T*
+/F2 13 Tf
+(3. Objectives) Tj
+/F1 10 Tf
+T*
+(- Build a browser-based chat interface for questions about internal documents.) Tj
+T*
+(- Create a FastAPI endpoint to receive and process questions.) Tj
+T*
+(- Retrieve the most relevant section from a local knowledge base.) Tj
+T*
+(- Return a clear fallback response when no relevant information is found.) Tj
+T*
+(- Add practical UI features such as Enter-to-send, a loading state, scrolling, and error) Tj
+T*
+(-   handling.) Tj
+T*
+T*
+/F2 13 Tf
+(4. Technology Stack) Tj
+/F1 10 Tf
+T*
+(- Frontend: HTML, CSS, and vanilla JavaScript.) Tj
+T*
+(- Backend: Python, FastAPI, Uvicorn, and Pydantic.) Tj
+T*
+(- Knowledge base: Plain-text file \(knowledge.txt\).) Tj
+T*
+(- Development environment: VS Code and Live Server.) Tj
+T*
+T*
+/F2 13 Tf
+(5. System Architecture) Tj
+/F1 10 Tf
+T*
+(User -> index.html -> POST /ask -> FastAPI app.py -> knowledge.txt -> relevant paragraph ->) Tj
+T*
+(JSON response -> browser chat.) Tj
+T*
+T*
+T*
+/F2 13 Tf
+(6. Implementation Details) Tj
+/F1 10 Tf
+T*
+ET
+BT
+/F1 8 Tf
+50 30 Td
+(RAG Document Assistant Project Report | Page 1 of 3) Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 8 0 R >>
+endobj
+8 0 obj
+<< /Length 2647 >>
+stream
+BT
+/F1 10 Tf
+50 770 Td
+14 TL
+T*
+/F2 13 Tf
+(6.1 Frontend - index.html) Tj
+/F1 10 Tf
+T*
+(The page contains a question input, Send button, and chat box. The sendMessage function) Tj
+T*
+(takes the question, displays it, and uses fetch to send a JSON POST request to) Tj
+T*
+(http://127.0.0.1:8000/ask. The returned answer is shown in the chat.) Tj
+T*
+T*
+(The addMessage helper creates DOM elements using textContent and createTextNode rather than) Tj
+T*
+(inserting user text as HTML. This is safer because typed text is displayed as text, not) Tj
+T*
+(executable markup.) Tj
+T*
+T*
+(- Enter key support sends the question without clicking Send.) Tj
+T*
+(- Thinking status gives the user feedback while a request is running.) Tj
+T*
+(- The input and button are disabled during the request to prevent duplicates.) Tj
+T*
+(- Automatic scrolling keeps the newest message visible.) Tj
+T*
+(- Error handling reports when the local backend is unavailable.) Tj
+T*
+T*
+/F2 13 Tf
+(6.2 Backend - app.py) Tj
+/F1 10 Tf
+T*
+(FastAPI exposes a POST endpoint named /ask. Pydantic validates that every request contains a) Tj
+T*
+(question string. CORS middleware allows the browser page and local backend to communicate) Tj
+T*
+(while they run on different ports.) Tj
+T*
+T*
+(The backend reads knowledge.txt and splits it into sections at blank lines. Each paragraph) Tj
+T*
+(is therefore treated as one retrieval chunk.) Tj
+T*
+T*
+T*
+/F2 13 Tf
+(6.3 Retrieval Logic) Tj
+/F1 10 Tf
+T*
+(The words function converts text to lowercase and extracts alphabetic words of three or more) Tj
+T*
+(letters. For every paragraph, the application counts the words shared with the user's) Tj
+T*
+(question. The paragraph with the highest count is selected.) Tj
+T*
+T*
+(For example, a question containing 'maintenance' matches the paragraph 'System maintenance) Tj
+T*
+(occurs every Sunday at midnight UTC.' If no words overlap, the app returns: I could not find) Tj
+T*
+(an answer in the knowledge base.) Tj
+T*
+T*
+T*
+/F2 13 Tf
+(7. RAG Explanation) Tj
+/F1 10 Tf
+T*
+(RAG stands for Retrieval-Augmented Generation. A production RAG system retrieves relevant) Tj
+T*
+(source text and passes it to a language model, which then writes a grounded answer. This) Tj
+T*
+(project implements the retrieval foundation and returns the retrieved evidence directly. It) Tj
+T*
+(does not yet use embeddings, a vector database, or an LLM.) Tj
+T*
+T*
+T*
+/F2 13 Tf
+(8. How to Run the Project) Tj
+/F1 10 Tf
+T*
+(- Install dependencies: python -m pip install fastapi uvicorn) Tj
+T*
+(- Start the backend: python -m uvicorn app:app --reload) Tj
+T*
+ET
+BT
+/F1 8 Tf
+50 30 Td
+(RAG Document Assistant Project Report | Page 2 of 3) Tj
+ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 10 0 R >>
+endobj
+10 0 obj
+<< /Length 1463 >>
+stream
+BT
+/F1 10 Tf
+50 770 Td
+14 TL
+(- Open index.html with Live Server.) Tj
+T*
+(- Ask a question that contains terms found in knowledge.txt.) Tj
+T*
+T*
+/F2 13 Tf
+(9. Current Limitations) Tj
+/F1 10 Tf
+T*
+(- Retrieval depends on exact keyword overlap; it does not understand semantic similarity.) Tj
+T*
+(- Only plain-text knowledge is supported.) Tj
+T*
+(- The system returns source text rather than an LLM-generated answer.) Tj
+T*
+(- The local CORS configuration allows all origins and should be restricted before) Tj
+T*
+(-   deployment.) Tj
+T*
+T*
+/F2 13 Tf
+(10. Future Enhancements) Tj
+/F1 10 Tf
+T*
+(- Use embeddings and ChromaDB or FAISS for semantic search.) Tj
+T*
+(- Support PDF, CSV, and document uploads.) Tj
+T*
+(- Use an LLM to generate concise answers only from retrieved context.) Tj
+T*
+(- Add source citations, confidence scores, authentication, and a SQLite audit log.) Tj
+T*
+(- Extend the solution into an operations exception-resolution copilot for policies,) Tj
+T*
+(-   invoices, and SOPs.) Tj
+T*
+T*
+/F2 13 Tf
+(11. Conclusion) Tj
+/F1 10 Tf
+T*
+(The RAG Document Assistant successfully proves an end-to-end AI application workflow. It) Tj
+T*
+(provides a strong foundation for a more advanced enterprise knowledge assistant because its) Tj
+T*
+(components are modular: the interface, API, retrieval logic, and knowledge base can each be) Tj
+T*
+(upgraded independently.) Tj
+T*
+T*
+ET
+BT
+/F1 8 Tf
+50 30 Td
+(RAG Document Assistant Project Report | Page 3 of 3) Tj
+ET
+endstream
+endobj
+xref
+0 11
+0000000000 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000133 00000 n 
+0000000203 00000 n 
+0000000278 00000 n 
+0000000414 00000 n 
+0000002735 00000 n 
+0000002871 00000 n 
+0000005570 00000 n 
+0000005707 00000 n 
+trailer
+<< /Size 11 /Root 1 0 R >>
+startxref
+7223
+%%EOF
